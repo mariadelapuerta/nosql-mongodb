@@ -1,0 +1,16 @@
+{
+	"mktsegment":"",
+	"orders": [
+		{
+			"listitems": [
+				{
+					"extendedprice":"",
+					"discount":"",
+					"shipdate":"",
+				}
+			], 
+			"shippriority":"",
+			"orderdate":""
+		}
+	]
+}
