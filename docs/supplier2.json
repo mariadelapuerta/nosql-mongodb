@@ -1,0 +1,25 @@
+{
+	"name":"Maria",
+	"address":"Juncal algo",
+	"phone":"46783268",
+	"actbal":"300000.0",
+	"comment":"Morosa",
+	"nationname":"Argentina",
+	"regionname":"Buenos Aires",
+	"parts": [
+		{"partkey":"2300", "mfgr":"Acme", "size":"3000", "type":"Corcho"}
+		
+		{"partkey":"2301", "mfgr":"Acme", "size":"3000", "type":"Corcho"}
+
+		{"partkey":"2302", "mfgr":"Acme", "size":"3000", "type":"Corcho"}
+	
+		{"partkey":"2303", "mfgr":"Jorgito", "size":"2900", "type":"Metal"}
+
+
+		{"partkey":"2304", "mfgr":"Jorgito", "size":"2900", "type":"Metal"}
+
+		{"partkey":"2305", "mfgr":"Jorgito", "size":"2900", "type":"Metal"}
+
+		{"partkey":"2306", "mfgr":"ITBA", "size":"2900", "type":"Metal"}	
+	]
+}

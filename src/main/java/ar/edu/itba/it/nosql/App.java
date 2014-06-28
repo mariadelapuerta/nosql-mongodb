@@ -1,6 +1,10 @@
 package ar.edu.itba.it.nosql;
 
+import java.io.IOException;
 import java.net.UnknownHostException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +19,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.util.JSON;
 
 public class App {
 
@@ -25,23 +30,24 @@ public class App {
 	static Double[] disc = { 0.1, 0.2, 0.3, 0.4 };
 	static Double[] tax = { 0.1, 0.2, 0.3, 0.4 };
 	static String[] ship = { "pending", "pending", "delivered", "canceled" };
-	
-	static String[] name = {"Pablo", "Maria", "Federico", "Agustin", "Andres"};
-	static String[] address = {"a", "b", "c", "d", "e"};
-	static String[] phone = {"1", "2", "3", "4", "5"};
-	static Double[] actbal = {1.0, 2.0, 3.0, 4.0, 5.0};
-	static String[] comment = {"a", "b", "c", "d", "e"};
-	static String[] nationname = {"Arg", "Arg", "Bra", "Col", "Chi"};	
-	static String[] regionname = {"BA", "BA", "BAH", "BOG", "SAN"};
 
- 
-	public static void main(String[] args) {
+	static String[] name = { "Pablo", "Maria", "Federico", "Agustin", "Andres" };
+	static String[] address = { "a", "b", "c", "d", "e" };
+	static String[] phone = { "1", "2", "3", "4", "5" };
+	static Double[] actbal = { 1.0, 2.0, 3.0, 4.0, 5.0 };
+	static String[] comment = { "a", "b", "c", "d", "e" };
+	static String[] nationname = { "Arg", "Arg", "Bra", "Col", "Chi" };
+	static String[] regionname = { "BA", "BA", "BAH", "BOG", "SAN" };
+
+	public static void main(String[] args) throws IOException {
 		try {
 			MongoClient mongo = new MongoClient("localhost", 27017);
 			DB db = mongo.getDB("db");
 			DBCollection collection = db.getCollection("user");
 
-			loadFirstQueryData(collection);
+			//loadFirstQueryData(collection);
+			
+			loadSecondQueryData(collection);
 
 			System.out.println("All items: " + collection.getCount());
 
@@ -53,10 +59,8 @@ public class App {
 			} finally {
 				cursor.close();
 			}
-			
-			firstQuery(collection);
-			
-			
+
+			//firstQuery(collection);
 
 			collection.drop();
 
@@ -66,7 +70,7 @@ public class App {
 		}
 
 	}
-	
+
 	public static void loadFirstQueryData(DBCollection collection) {
 		BasicDBObject document;
 		for (int i = 0; i < status.length; i++) {
@@ -98,8 +102,7 @@ public class App {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("returnflag", "$returnflag");
 		map.put("linestatus", "$linestatus");
-		DBObject groupFields = new BasicDBObject("_id", new BasicDBObject(
-				map));
+		DBObject groupFields = new BasicDBObject("_id", new BasicDBObject(map));
 		// Suma de cantidades
 		groupFields.put("sum_qty", new BasicDBObject("$sum", "$quantity"));
 
@@ -132,8 +135,8 @@ public class App {
 		groupFields.put("avg_qty", new BasicDBObject("$avg", "$quantity"));
 
 		// Promedio de precio
-		groupFields.put("avg_price", new BasicDBObject("$avg",
-				"$extendedprice"));
+		groupFields.put("avg_price",
+				new BasicDBObject("$avg", "$extendedprice"));
 
 		// Promedio de descuento
 		groupFields.put("avg_disc", new BasicDBObject("$avg", "$discount"));
@@ -142,13 +145,15 @@ public class App {
 		groupFields.put("count_order", new BasicDBObject("$sum", 1));
 
 		DBObject group = new BasicDBObject("$group", groupFields);
-		
-		// Finally the $sort operation
-		DBObject sort = new BasicDBObject("$sort", new BasicDBObject("count_order", -1));
-		DBObject sort2 = new BasicDBObject("$sort", new BasicDBObject("sum_base_price", -1));
-		
 
-		List<DBObject> pipeline = Arrays.asList(match, project, group, sort, sort2);
+		// Finally the $sort operation
+		DBObject sort = new BasicDBObject("$sort", new BasicDBObject(
+				"count_order", -1));
+		DBObject sort2 = new BasicDBObject("$sort", new BasicDBObject(
+				"sum_base_price", -1));
+
+		List<DBObject> pipeline = Arrays.asList(match, project, group, sort,
+				sort2);
 		AggregationOutput c = collection.aggregate(pipeline);
 
 		for (DBObject a : c.results()) {
@@ -157,20 +162,28 @@ public class App {
 
 	}
 
-	public static void loadSecondQueryData(DBCollection collection) {
-		BasicDBObject document;
-		for (int i = 0; i < name.length; i++) {
-			document = new BasicDBObject();
-			document.append("name", name[i]);
-			document.append("address", address[i]);
-			document.append("phone", phone[i]);
-			document.append("actbal", actbal[i]);
-			document.append("comment", comment[i]);
-			document.append("nationname", nationname[i]);
-			document.append("regionname", regionname[i]);
-		}
+	public static void loadSecondQueryData(DBCollection collection)
+			throws IOException {
+		// BasicDBObject document;
+		// for (int i = 0; i < name.length; i++) {
+		// document = new BasicDBObject();
+		// document.append("name", name[i]);
+		// document.append("address", address[i]);
+		// document.append("phone", phone[i]);
+		// document.append("actbal", actbal[i]);
+		// document.append("comment", comment[i]);
+		// document.append("nationname", nationname[i]);
+		// document.append("regionname", regionname[i]);
+		// }
+
+		Path path = FileSystems.getDefault().getPath("docs", "supplier.json");
+
+		String supp = new String(Files.readAllBytes(path));
+
+		Object o = JSON.parse(supp);
+		DBObject document = (DBObject) o;
+		
+		collection.insert(document);
 	}
-	
 
 }
-

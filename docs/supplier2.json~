@@ -1,0 +1,25 @@
+{
+	"name":"Federico",
+	"address":"La Pampa 5671",
+	"phone":"45225409",
+	"actbal":"500000.0",
+	"comment":"Paga a tiempo",
+	"nationname":"Argentina",
+	"regionname":"Buenos Aires",
+	"parts": [
+		{"partkey":"2300", "mfgr":"Acme", "size":"3000", "type":"Corcho"}
+		
+		{"partkey":"2301", "mfgr":"Acme", "size":"3000", "type":"Corcho"}
+
+		{"partkey":"2302", "mfgr":"Acme", "size":"3000", "type":"Corcho"}
+	
+		{"partkey":"2303", "mfgr":"Jorgito", "size":"2900", "type":"Metal"}
+
+
+		{"partkey":"2304", "mfgr":"Jorgito", "size":"2900", "type":"Metal"}
+
+		{"partkey":"2305", "mfgr":"Jorgito", "size":"2900", "type":"Metal"}
+
+		{"partkey":"2306", "mfgr":"ITBA", "size":"2900", "type":"Metal"}	
+	]
+}
