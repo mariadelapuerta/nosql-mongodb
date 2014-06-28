@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -172,8 +173,28 @@ public class App {
 	}
 
 	
-	public static void secondQuery(DBCollection collection) {
+	public static void secondQuery(DBCollection collection, String regionName, Integer size, String type) {
 	
+		//Match por Region
+		DBObject regionCriteria= new BasicDBObject("$match", new BasicDBObject("regionname" , regionName));
+
+		//Match por Size
+		DBObject sizeCriteria= new BasicDBObject("$match", new BasicDBObject("size" , size));
+		
+		//Match por Type
+		DBObject typeCriteria= new BasicDBObject("$match", new BasicDBObject("type" , type));
+		
+		//Creo la criteria del AND de los matches
+		BasicDBList and = new BasicDBList();
+		and.add(regionCriteria);
+		and.add(sizeCriteria);
+		and.add(typeCriteria);
+		
+		DBObject matchCriteria = new BasicDBObject("$and", and);
+		DBObject match = new BasicDBObject("$match", matchCriteria);
+		
+		
+		
 		DBObject fields = new BasicDBObject("acctbal", 1);
 		fields.put("name", 1);
 		fields.put("regionname", 1);
@@ -183,9 +204,17 @@ public class App {
 		fields.put("phone", 1);
 		fields.put("comment", 1);
 		fields.put("_id", 0);
-		DBObject project = new BasicDBObject("$project", fields);
+		DBObject project = new BasicDBObject("$project",fields);
+		
+		
 		
 	
+		List<DBObject> pipeline = Arrays.asList(match, project);
+		AggregationOutput c = collection.aggregate(pipeline);
+
+		for (DBObject a : c.results()) {
+			System.out.println(a);
+		}
 	
 	}
 	

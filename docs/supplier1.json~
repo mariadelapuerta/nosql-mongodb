@@ -7,19 +7,19 @@
 	"nationname":"Argentina",
 	"regionname":"Buenos Aires",
 	"parts": [
-		{"partkey":"2300", "mfgr":"Acme", "size":"3000", "type":"Corcho"},
+		{"partkey":"2300", "mfgr":"Acme", "size":"3000", "type":"Corcho", "cost":"12.5"},
 		
-		{"partkey":"2301", "mfgr":"Acme", "size":"3000", "type":"Corcho"},
+		{"partkey":"2301", "mfgr":"Acme", "size":"3000", "type":"Corcho", "cost":"11.5"},
 
-		{"partkey":"2302", "mfgr":"Acme", "size":"3000", "type":"Corcho"},
+		{"partkey":"2302", "mfgr":"Acme", "size":"3000", "type":"Corcho", "cost":"10.5"},
 	
-		{"partkey":"2303", "mfgr":"Jorgito", "size":"2900", "type":"Metal"},
+		{"partkey":"2303", "mfgr":"Jorgito", "size":"2900", "type":"Metal", "cost":"22.5"},
 
 
-		{"partkey":"2304", "mfgr":"Jorgito", "size":"2900", "type":"Metal"},
+		{"partkey":"2304", "mfgr":"Jorgito", "size":"2900", "type":"Metal", "cost":"23.5"},
 
-		{"partkey":"2305", "mfgr":"Jorgito", "size":"2900", "type":"Metal"},
+		{"partkey":"2305", "mfgr":"Jorgito", "size":"2900", "type":"Metal", "cost":"25.5"},
 
-		{"partkey":"2306", "mfgr":"ITBA", "size":"2900", "type":"Metal"}	
+		{"partkey":"2306", "mfgr":"ITBA", "size":"2900", "type":"Metal", "cost":"26.5"}	
 	]
 }
