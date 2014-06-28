@@ -180,11 +180,23 @@ public class App {
 		DBObject match = new BasicDBObject("$match", new BasicDBObject(
 				"regionname", regionName));
 
+		DBObject fields = new BasicDBObject("acctbal", 1);
+		fields.put("name", 1);
+		fields.put("regionname", 1);
+		fields.put("partkey", 1);
+		fields.put("mfgr", 1);
+		fields.put("address", 1);
+		fields.put("phone", 1);
+		fields.put("comment", 1);
+		fields.put("parts", 1);
+		fields.put("_id", 0);
+		DBObject project = new BasicDBObject("$project", fields);
+
 		// ----------------CRITERIO PARA LAS PARTES------------------------
 
 		// Match por Size
 		DBObject sizeCriteria = new BasicDBObject("$match", new BasicDBObject(
-				"size", size));
+				"parts", new BasicDBObject("size", size)));
 
 		// Match por Type
 		DBObject typeCriteria = new BasicDBObject("$match", new BasicDBObject(
@@ -197,17 +209,6 @@ public class App {
 
 		DBObject partCriteria = new BasicDBObject("$and", and);
 		// --------------------------------------------------------
-
-		DBObject fields = new BasicDBObject("acctbal", 1);
-		fields.put("name", 1);
-		fields.put("regionname", 1);
-		fields.put("partkey", 1);
-		fields.put("mfgr", 1);
-		fields.put("address", 1);
-		fields.put("phone", 1);
-		fields.put("comment", 1);
-		fields.put("_id", 0);
-		DBObject project = new BasicDBObject("$project", fields);
 
 		List<DBObject> pipeline = Arrays.asList(match, project);
 		AggregationOutput c = collection.aggregate(pipeline);
