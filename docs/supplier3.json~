@@ -1,0 +1,18 @@
+{
+	"name":"Agustin",
+	"address":"Murature 500",
+	"phone":"479330575",
+	"actbal":"2000.0",
+	"comment":"Pajero",
+	"nationname":"Chile",
+	"regionname":"Santiago",
+	"parts": [
+		{"partkey":"2300", "mfgr":"Acme", "size":"3000", "type":"Corcho"},
+		
+		{"partkey":"2305", "mfgr":"Jorgito", "size":"2900", "type":"Metal"},
+
+		{"partkey":"2308", "mfgr":"UTN", "size":"2950", "type":"Alumunio"},
+
+		{"partkey":"2310", "mfgr":"UTN", "size":"2950", "type":"Alumunio"}	
+	]
+}

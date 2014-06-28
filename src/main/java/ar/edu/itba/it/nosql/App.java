@@ -31,14 +31,6 @@ public class App {
 	static Double[] tax = { 0.1, 0.2, 0.3, 0.4 };
 	static String[] ship = { "pending", "pending", "delivered", "canceled" };
 
-	static String[] name = { "Pablo", "Maria", "Federico", "Agustin", "Andres" };
-	static String[] address = { "a", "b", "c", "d", "e" };
-	static String[] phone = { "1", "2", "3", "4", "5" };
-	static Double[] actbal = { 1.0, 2.0, 3.0, 4.0, 5.0 };
-	static String[] comment = { "a", "b", "c", "d", "e" };
-	static String[] nationname = { "Arg", "Arg", "Bra", "Col", "Chi" };
-	static String[] regionname = { "BA", "BA", "BAH", "BOG", "SAN" };
-
 	public static void main(String[] args) throws IOException {
 		try {
 			MongoClient mongo = new MongoClient("localhost", 27017);
@@ -164,19 +156,11 @@ public class App {
 
 	public static void loadSecondQueryData(DBCollection collection)
 			throws IOException {
-		// BasicDBObject document;
-		// for (int i = 0; i < name.length; i++) {
-		// document = new BasicDBObject();
-		// document.append("name", name[i]);
-		// document.append("address", address[i]);
-		// document.append("phone", phone[i]);
-		// document.append("actbal", actbal[i]);
-		// document.append("comment", comment[i]);
-		// document.append("nationname", nationname[i]);
-		// document.append("regionname", regionname[i]);
-		// }
-
-		Path path = FileSystems.getDefault().getPath("docs", "supplier.json");
+	
+		int i = 1;
+		for (i=1;i<4;i++){
+			
+		Path path = FileSystems.getDefault().getPath("docs", "supplier"+i+".json");
 
 		String supp = new String(Files.readAllBytes(path));
 
@@ -184,6 +168,25 @@ public class App {
 		DBObject document = (DBObject) o;
 		
 		collection.insert(document);
+		}
 	}
 
+	
+	public static void secondQuery(DBCollection collection) {
+	
+		DBObject fields = new BasicDBObject("acctbal", 1);
+		fields.put("name", 1);
+		fields.put("regionname", 1);
+		fields.put("partkey", 1);
+		fields.put("mfgr", 1);
+		fields.put("address", 1);
+		fields.put("phone", 1);
+		fields.put("comment", 1);
+		fields.put("_id", 0);
+		DBObject project = new BasicDBObject("$project", fields);
+		
+	
+	
+	}
+	
 }

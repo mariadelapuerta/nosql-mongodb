@@ -7,19 +7,18 @@
 	"nationname":"Argentina",
 	"regionname":"Buenos Aires",
 	"parts": [
-		{"partkey":"2300", "mfgr":"Acme", "size":"3000", "type":"Corcho"}
+		{"partkey":"2300", "mfgr":"Acme", "size":"3000", "type":"Corcho", "cost":"12.5"},
 		
-		{"partkey":"2301", "mfgr":"Acme", "size":"3000", "type":"Corcho"}
-
-		{"partkey":"2302", "mfgr":"Acme", "size":"3000", "type":"Corcho"}
+		{"partkey":"2302", "mfgr":"Acme", "size":"3000", "type":"Corcho", "cost":"13.5"},
 	
-		{"partkey":"2303", "mfgr":"Jorgito", "size":"2900", "type":"Metal"}
+		{"partkey":"2303", "mfgr":"Jorgito", "size":"2900", "type":"Metal", "cost":"20.5"},
 
+		{"partkey":"2305", "mfgr":"Jorgito", "size":"2900", "type":"Metal" , "cost":"18.5"},
 
-		{"partkey":"2304", "mfgr":"Jorgito", "size":"2900", "type":"Metal"}
+		{"partkey":"2308", "mfgr":"UTN", "size":"2950", "type":"Alumunio" , "cost":"14.5"},
 
-		{"partkey":"2305", "mfgr":"Jorgito", "size":"2900", "type":"Metal"}
+		{"partkey":"2309", "mfgr":"UTN", "size":"2950", "type":"Alumunio" , "cost":"12.5"},
 
-		{"partkey":"2306", "mfgr":"ITBA", "size":"2900", "type":"Metal"}	
+		{"partkey":"2310", "mfgr":"UTN", "size":"2950", "type":"Alumunio" , "cost":"15.5"}	
 	]
 }
