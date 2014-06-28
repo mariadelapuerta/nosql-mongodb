@@ -38,8 +38,8 @@ public class App {
 			DB db = mongo.getDB("db");
 			DBCollection collection = db.getCollection("user");
 
-			//loadFirstQueryData(collection);
-			
+			// loadFirstQueryData(collection);
+
 			loadSecondQueryData(collection);
 
 			System.out.println("All items: " + collection.getCount());
@@ -53,8 +53,8 @@ public class App {
 				cursor.close();
 			}
 
-			//firstQuery(collection);
-
+			// firstQuery(collection);
+			secondQuery(collection, "Buenos Aires", 3000, "Corcho");
 			collection.drop();
 
 		} catch (UnknownHostException e) {
@@ -157,44 +157,47 @@ public class App {
 
 	public static void loadSecondQueryData(DBCollection collection)
 			throws IOException {
-	
+
 		int i = 1;
-		for (i=1;i<4;i++){
-			
-		Path path = FileSystems.getDefault().getPath("docs", "supplier"+i+".json");
+		for (i = 1; i < 4; i++) {
 
-		String supp = new String(Files.readAllBytes(path));
+			Path path = FileSystems.getDefault().getPath("docs",
+					"supplier" + i + ".json");
 
-		Object o = JSON.parse(supp);
-		DBObject document = (DBObject) o;
-		
-		collection.insert(document);
+			String supp = new String(Files.readAllBytes(path));
+
+			Object o = JSON.parse(supp);
+			DBObject document = (DBObject) o;
+
+			collection.insert(document);
 		}
 	}
 
-	
-	public static void secondQuery(DBCollection collection, String regionName, Integer size, String type) {
-	
-		//Match por Region
-		DBObject regionCriteria= new BasicDBObject("$match", new BasicDBObject("regionname" , regionName));
+	public static void secondQuery(DBCollection collection, String regionName,
+			Integer size, String type) {
 
-		//Match por Size
-		DBObject sizeCriteria= new BasicDBObject("$match", new BasicDBObject("size" , size));
-		
-		//Match por Type
-		DBObject typeCriteria= new BasicDBObject("$match", new BasicDBObject("type" , type));
-		
-		//Creo la criteria del AND de los matches
+		// Match por Region
+		DBObject match = new BasicDBObject("$match", new BasicDBObject(
+				"regionname", regionName));
+
+		// ----------------CRITERIO PARA LAS PARTES------------------------
+
+		// Match por Size
+		DBObject sizeCriteria = new BasicDBObject("$match", new BasicDBObject(
+				"size", size));
+
+		// Match por Type
+		DBObject typeCriteria = new BasicDBObject("$match", new BasicDBObject(
+				"type", type));
+
+		// Creo la criteria del AND de los matches
 		BasicDBList and = new BasicDBList();
-		and.add(regionCriteria);
 		and.add(sizeCriteria);
 		and.add(typeCriteria);
-		
-		DBObject matchCriteria = new BasicDBObject("$and", and);
-		DBObject match = new BasicDBObject("$match", matchCriteria);
-		
-		
-		
+
+		DBObject partCriteria = new BasicDBObject("$and", and);
+		// --------------------------------------------------------
+
 		DBObject fields = new BasicDBObject("acctbal", 1);
 		fields.put("name", 1);
 		fields.put("regionname", 1);
@@ -204,18 +207,15 @@ public class App {
 		fields.put("phone", 1);
 		fields.put("comment", 1);
 		fields.put("_id", 0);
-		DBObject project = new BasicDBObject("$project",fields);
-		
-		
-		
-	
+		DBObject project = new BasicDBObject("$project", fields);
+
 		List<DBObject> pipeline = Arrays.asList(match, project);
 		AggregationOutput c = collection.aggregate(pipeline);
 
 		for (DBObject a : c.results()) {
 			System.out.println(a);
 		}
-	
+
 	}
-	
+
 }
