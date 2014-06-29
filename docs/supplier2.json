@@ -9,7 +9,7 @@
 	"parts": [
 		{"partkey":"2300", "mfgr":"Acme", "size":3000, "type":"Corcho", "cost":12.5},
 		
-		{"partkey":"2302", "mfgr":"Acme", "size":3000, "type":"Corcho", "cost":13.5},
+		{"partkey":"2302", "mfgr":"Acme", "size":3000, "type":"Metal", "cost":13.5},
 	
 		{"partkey":"2303", "mfgr":"Jorgito", "size":2900, "type":"Metal", "cost":20.5},
 

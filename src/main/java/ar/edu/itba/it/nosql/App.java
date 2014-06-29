@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.NewBSONDecoder;
+
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -174,7 +176,7 @@ public class App {
 	}
 
 	public static void secondQuery(DBCollection collection, String regionName,
-			Integer size, String type) {
+			int size, String type) {
 
 		// Match por Region
 		DBObject match = new BasicDBObject("$match", new BasicDBObject(
@@ -192,25 +194,30 @@ public class App {
 		fields.put("_id", 0);
 		DBObject project = new BasicDBObject("$project", fields);
 
+		DBObject unwinds = new BasicDBObject("$unwind", "$parts");
+
 		// ----------------CRITERIO PARA LAS PARTES------------------------
 
 		// Match por Size
 		DBObject sizeCriteria = new BasicDBObject("$match", new BasicDBObject(
-				"parts", new BasicDBObject("size", size)));
+				"parts.size", new BasicDBObject("$eq", size)));
 
 		// Match por Type
 		DBObject typeCriteria = new BasicDBObject("$match", new BasicDBObject(
-				"type", type));
+				"parts.type", type));
 
+		// TODO: ESTO NO ESTA FUNCIONANDO ASI QUE LO HAGO POR SEPARADO.
 		// Creo la criteria del AND de los matches
-		BasicDBList and = new BasicDBList();
-		and.add(sizeCriteria);
-		and.add(typeCriteria);
+		// BasicDBList and = new BasicDBList();
+		// and.add(sizeCriteria);
+		// and.add(typeCriteria);
+		//
+		// DBObject partCriteria = new BasicDBObject("$and", and);
 
-		DBObject partCriteria = new BasicDBObject("$and", and);
 		// --------------------------------------------------------
 
-		List<DBObject> pipeline = Arrays.asList(match, project);
+		List<DBObject> pipeline = Arrays.asList(match, project, unwinds,
+				sizeCriteria, typeCriteria);
 		AggregationOutput c = collection.aggregate(pipeline);
 
 		for (DBObject a : c.results()) {
@@ -218,5 +225,4 @@ public class App {
 		}
 
 	}
-
 }
