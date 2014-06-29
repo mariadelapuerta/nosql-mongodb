@@ -213,8 +213,10 @@ public class App {
 		// and.add(typeCriteria);
 		//
 		// DBObject partCriteria = new BasicDBObject("$and", and);
-
 		// --------------------------------------------------------
+
+		DBObject groupFields = new BasicDBObject("_id", "$_id");
+		DBObject group = new BasicDBObject("$group", groupFields);
 
 		List<DBObject> pipeline = Arrays.asList(match, project, unwinds,
 				sizeCriteria, typeCriteria);
