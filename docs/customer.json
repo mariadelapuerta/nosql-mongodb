@@ -2,7 +2,7 @@
 	"mktsegment":"",
 	"orders": [
 		{
-			"listitems": [
+			"lineitems": [
 				{
 					"extendedprice":"",
 					"discount":"",
@@ -10,7 +10,8 @@
 				}
 			], 
 			"shippriority":"",
-			"orderdate":""
+			"orderdate":"",
+			"orderkey":""
 		}
 	]
 }

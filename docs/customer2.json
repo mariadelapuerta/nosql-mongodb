@@ -1,0 +1,56 @@
+{
+	"mktsegment":"B",
+	"orders": [
+		{
+			"lineitems": [
+				{
+					"extendedprice":"120",
+					"discount":"0.2",
+					"shipdate":{"$date":"2014-06-29T20:50:54.170Z"},
+				},
+				{
+					"extendedprice":"1222",
+					"discount":"0",
+					"shipdate":{"$date":"2014-06-30T20:50:54.170Z"},
+				},
+				{
+					"extendedprice":"15",
+					"discount":"0",
+					"shipdate":{"$date":"2014-06-28T20:50:54.170Z"},
+				}
+			], 
+			"shippriority":"HIGH",
+			"orderdate":{"$date":"2014-06-30T20:50:54.170Z"},
+			"orderkey":"4"
+		}, 
+		{
+			"lineitems": [
+				{
+					"extendedprice":"10",
+					"discount":"0",
+					"shipdate":{"$date":"2014-06-30T20:50:54.170Z"},
+				},
+				{
+					"extendedprice":"155",
+					"discount":"0.2",
+					"shipdate":{"$date":"2014-06-28T20:50:54.170Z"},
+				}
+			], 
+			"shippriority":"LOW",
+			"orderdate":{"$date":"2014-06-25T20:50:54.170Z"},
+			"orderkey":"5"
+		},
+		{
+			"lineitems": [
+				{
+					"extendedprice":"150",
+					"discount":"0.2",
+					"shipdate":{"$date":"2014-06-28T20:50:54.170Z"},
+				}
+			], 
+			"shippriority":"LOW",
+			"orderdate":{"$date":"2014-07-01T20:50:54.170Z"},
+			"orderkey":"6"
+		}
+	]
+}
