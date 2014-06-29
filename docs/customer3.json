@@ -1,5 +1,7 @@
 {
 	"mktsegment":"A",
+	"nationname":"Chile",
+	"regionname":"Santiago",
 	"orders": [
 		{
 			"lineitems": [
@@ -7,11 +9,15 @@
 					"extendedprice":140,
 					"discount":0.2,
 					"shipdate":{"$date":"2014-06-28T20:50:54.170Z"},
+					"suppnationname":"Argentina",
+					"suppregionname":"Buenos Aires"
 				},
 				{
 					"extendedprice":180,
 					"discount":0,
 					"shipdate":{"$date":"2014-06-30T20:50:54.170Z"},
+					"suppnationname":"Argentina",
+					"suppregionname":"Buenos Aires"
 				}
 			], 
 			"shippriority":"HIGH",
@@ -24,11 +30,15 @@
 					"extendedprice":10,
 					"discount":0,
 					"shipdate":{"$date":"2014-06-30T20:50:54.170Z"},
+					"suppnationname":"Chile",
+					"suppregionname":"Santiago"
 				},
 				{
 					"extendedprice":155,
 					"discount":0.2,
 					"shipdate":{"$date":"2014-06-28T20:50:54.170Z"},
+					"suppnationname":"Argentina",
+					"suppregionname":"Buenos Aires"
 				}
 			], 
 			"shippriority":"LOW",
@@ -41,6 +51,8 @@
 					"extendedprice":150,
 					"discount":0.2,
 					"shipdate":{"$date":"2014-06-28T20:50:54.170Z"},
+					"suppnationname":"Argentina",
+					"suppregionname":"Buenos Aires"
 				}
 			], 
 			"shippriority":"LOW",

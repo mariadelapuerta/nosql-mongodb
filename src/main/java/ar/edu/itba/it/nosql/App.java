@@ -42,6 +42,7 @@ public class App {
 			//loadSecondQueryData(collection);
 			
 			loadThirdQueryData(collection);
+			
 
 
 			System.out.println("All items: " + collection.getCount());
@@ -62,7 +63,6 @@ public class App {
 			collection.drop();
 
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -212,21 +212,8 @@ public class App {
 		BasicDBList min = new BasicDBList();
 		min.add(new BasicDBObject("$min", "parts.supplycost"));
 
-		DBObject minSel = new BasicDBObject("$match", new BasicDBObject(
-				"parts.supplycost", new BasicDBObject("$min",
-						"parts.supplycost")));
-
-		// TODO: ESTO NO ESTA FUNCIONANDO ASI QUE LO HAGO POR SEPARADO.
-		// Creo la criteria del AND de los matches
-		// BasicDBList and = new BasicDBList();
-		// and.add(sizeCriteria);
-		// and.add(typeCriteria);
-		//
-		// DBObject partCriteria = new BasicDBObject("$and", and);
-		// --------------------------------------------------------
-
 		DBObject groupFields = new BasicDBObject("_id", "$parts.supplycost");
-		//
+
 
 		groupFields.put("info", new BasicDBObject("$push", "$$ROOT"));
 
@@ -235,9 +222,6 @@ public class App {
 		DBObject sort = new BasicDBObject("$sort",
 				new BasicDBObject("price", 1));
 
-		//
-		// DBObject first = new BasicDBObject("$first", new BasicDBObject(
-		// "minPrice", "$price"));
 
 		DBObject limit = new BasicDBObject("$limit", 1);
 
@@ -336,6 +320,11 @@ public class App {
 
 		}
 		
+		
+	}
+
+	public static void loadFourthQueryData(DBCollection collection) throws IOException {
+		loadThirdQueryData(collection);
 		
 	}
 }

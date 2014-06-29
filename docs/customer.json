@@ -1,5 +1,7 @@
 {
 	"mktsegment":"",
+	"nationname":"",
+	"regionname":"",
 	"orders": [
 		{
 			"lineitems": [
@@ -7,6 +9,8 @@
 					"extendedprice":"",
 					"discount":"",
 					"shipdate":"",
+					"suppnationname":"",
+					"suppregionname":""
 				}
 			], 
 			"shippriority":"",
