@@ -182,9 +182,10 @@ public class App {
 		DBObject match = new BasicDBObject("$match", new BasicDBObject(
 				"regionname", regionName));
 
-		DBObject fields = new BasicDBObject("acctbal", 1);
+		DBObject fields = new BasicDBObject("actbal", 1);
 		fields.put("name", 1);
 		fields.put("regionname", 1);
+		fields.put("nationname", 1);
 		fields.put("partkey", 1);
 		fields.put("mfgr", 1);
 		fields.put("address", 1);
@@ -206,6 +207,13 @@ public class App {
 		DBObject typeCriteria = new BasicDBObject("$match", new BasicDBObject(
 				"parts.type", type));
 
+		BasicDBList min = new BasicDBList();
+		min.add(new BasicDBObject("$min", "parts.supplycost"));
+
+		DBObject minSel = new BasicDBObject("$match", new BasicDBObject(
+				"parts.supplycost", new BasicDBObject("$min",
+						"parts.supplycost")));
+
 		// TODO: ESTO NO ESTA FUNCIONANDO ASI QUE LO HAGO POR SEPARADO.
 		// Creo la criteria del AND de los matches
 		// BasicDBList and = new BasicDBList();
@@ -215,15 +223,41 @@ public class App {
 		// DBObject partCriteria = new BasicDBObject("$and", and);
 		// --------------------------------------------------------
 
-		DBObject groupFields = new BasicDBObject("_id", "$_id");
+		DBObject groupFields = new BasicDBObject("_id", "$parts.supplycost");
+		//
+
+		groupFields.put("info", new BasicDBObject("$push", "$$ROOT"));
+
 		DBObject group = new BasicDBObject("$group", groupFields);
 
+		DBObject sort = new BasicDBObject("$sort",
+				new BasicDBObject("price", 1));
+
+		//
+		// DBObject first = new BasicDBObject("$first", new BasicDBObject(
+		// "minPrice", "$price"));
+
+		DBObject limit = new BasicDBObject("$limit", 1);
+
+		DBObject projectFields = new BasicDBObject("info.name", 1);
+		projectFields.put("info.actbal", 1);
+		projectFields.put("info.nationname", 1);
+		projectFields.put("info.parts.partkey", 1);
+		projectFields.put("info.parts.mfgr", 1);
+		projectFields.put("info.address", 1);
+		projectFields.put("info.phone", 1);
+		projectFields.put("info.comment", 1);
+
+		DBObject project2 = new BasicDBObject("$project", projectFields);
+
 		List<DBObject> pipeline = Arrays.asList(match, project, unwinds,
-				sizeCriteria, typeCriteria);
+				sizeCriteria, typeCriteria, group, sort, limit, project2);
+
 		AggregationOutput c = collection.aggregate(pipeline);
 
 		for (DBObject a : c.results()) {
 			System.out.println(a);
+
 		}
 
 	}
