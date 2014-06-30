@@ -20,7 +20,7 @@
 					"suppregionname":"Buenos Aires"
 				}
 			], 
-			"shippriority":"HIGH",
+			"shippriority": 1,
 			"orderdate":{"$date":"2014-06-30T20:50:54.170Z"},
 			"orderkey":"10"
 		}, 
@@ -41,7 +41,7 @@
 					"suppregionname":"Buenos Aires"
 				}
 			], 
-			"shippriority":"LOW",
+			"shippriority": 3,
 			"orderdate":{"$date":"2014-06-20T20:50:54.170Z"},
 			"orderkey":"11"
 		},
@@ -55,7 +55,7 @@
 					"suppregionname":"Buenos Aires"
 				}
 			], 
-			"shippriority":"LOW",
+			"shippriority": 3,
 			"orderdate":{"$date":"2014-06-22T20:50:54.170Z"},
 			"orderkey":"12"
 		}

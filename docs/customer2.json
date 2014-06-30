@@ -27,7 +27,7 @@
 					"suppregionname":"Santiago"
 				}
 			], 
-			"shippriority":"HIGH",
+			"shippriority":1,
 			"orderdate":{"$date":"2014-06-30T20:50:54.170Z"},
 			"orderkey":"4"
 		}, 
@@ -48,7 +48,7 @@
 					"suppregionname":"Santiago"
 				}
 			], 
-			"shippriority":"LOW",
+			"shippriority": 3 ,
 			"orderdate":{"$date":"2014-06-25T20:50:54.170Z"},
 			"orderkey":"5"
 		},
@@ -62,7 +62,7 @@
 					"suppregionname":"Buenos Aires"
 				}
 			], 
-			"shippriority":"LOW",
+			"shippriority": 3,
 			"orderdate":{"$date":"2014-07-01T20:50:54.170Z"},
 			"orderkey":"6"
 		}
