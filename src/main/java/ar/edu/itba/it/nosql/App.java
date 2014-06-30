@@ -31,19 +31,13 @@ public class App {
 
 			populateDataBase(collection);
 
-			System.out.println("All items: " + collection.getCount());
 
-			DBCursor cursor = collection.find();
-			try {
-				while (cursor.hasNext()) {
-					System.out.println(cursor.next());
-				}
-			} finally {
-				cursor.close();
+			if (args.length < 1) {
+				System.out
+						.println("Debe ingresar una opcion para continuar : 1, 2, 3 o 4");
+				return;
 			}
-
 			Integer option = new Integer(args[0]);
-
 			switch (option) {
 			case 1:
 				firstQuery(collection, new Date());
@@ -60,6 +54,7 @@ public class App {
 			default:
 				System.out
 						.println("Debe ingresar una opcion valida: 1, 2, 3, 4");
+				return;
 
 			}
 
