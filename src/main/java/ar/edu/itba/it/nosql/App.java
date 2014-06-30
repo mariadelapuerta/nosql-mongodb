@@ -23,27 +23,13 @@ import com.mongodb.util.JSON;
 
 public class App {
 
-	static String[] status = { "pending", "pending", "delivered", "canceled" };
-	static String[] returnflag = { "true", "true", "true", "false" };
-	static Integer[] qty = { 1, 2, 3, 4 };
-	static Integer[] price = { 10, 20, 30, 40 };
-	static Double[] disc = { 0.1, 0.2, 0.3, 0.4 };
-	static Double[] tax = { 0.1, 0.2, 0.3, 0.4 };
-	static String[] ship = { "pending", "pending", "delivered", "canceled" };
-
 	public static void main(String[] args) throws IOException {
 		try {
 			MongoClient mongo = new MongoClient("localhost", 27017);
 			DB db = mongo.getDB("db");
 			DBCollection collection = db.getCollection("user");
 
-			loadFirstQueryData(collection);
-
-			// loadSecondQueryData(collection);
-
-			// loadThirdQueryData(collection);
-
-			// loadFourthQueryData(collection);
+			populateDataBase(collection);
 
 			System.out.println("All items: " + collection.getCount());
 
@@ -56,10 +42,26 @@ public class App {
 				cursor.close();
 			}
 
-			firstQuery(collection, new Date());
-			// secondQuery(collection, "Buenos Aires", 3000, "Corcho");
-			// thirdQuery(collection, "A", new Date(), new Date());
-			// fourthQuery(collection, new Date(), "Buenos Aires");
+			Integer option = new Integer(args[0]);
+
+			switch (option) {
+			case 1:
+				firstQuery(collection, new Date());
+				break;
+			case 2:
+				secondQuery(collection, "Buenos Aires", 3000, "Corcho");
+				break;
+			case 3:
+				thirdQuery(collection, "A", new Date(), new Date());
+				break;
+			case 4:
+				fourthQuery(collection, new Date(), "Buenos Aires");
+				break;
+			default:
+				System.out
+						.println("Debe ingresar una opcion valida: 1, 2, 3, 4");
+
+			}
 
 			collection.drop();
 
@@ -383,5 +385,12 @@ public class App {
 
 		}
 
+	}
+
+	public static void populateDataBase(DBCollection collection)
+			throws IOException {
+		loadFirstQueryData(collection);
+		loadSecondQueryData(collection);
+		loadThirdQueryData(collection);
 	}
 }
