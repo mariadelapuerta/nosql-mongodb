@@ -341,6 +341,7 @@ public class App {
 				"orders.lineitems.shipdate", new BasicDBObject("$gt", date)));
 		Date date2 = new Date(date.getTime());
 		date2.setYear(date2.getYear() + 1);
+
 		DBObject orderDateMax = new BasicDBObject("$match", new BasicDBObject(
 				"orders.lineitems.shipdate", new BasicDBObject("$lt", date)));
 
