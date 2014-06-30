@@ -37,13 +37,13 @@ public class App {
 			DB db = mongo.getDB("db");
 			DBCollection collection = db.getCollection("user");
 
-			// loadFirstQueryData(collection);
+			loadFirstQueryData(collection);
 
 			// loadSecondQueryData(collection);
 
 			// loadThirdQueryData(collection);
 
-			loadFourthQueryData(collection);
+			// loadFourthQueryData(collection);
 
 			System.out.println("All items: " + collection.getCount());
 
@@ -56,10 +56,10 @@ public class App {
 				cursor.close();
 			}
 
-			// firstQuery(collection);
+			firstQuery(collection, new Date());
 			// secondQuery(collection, "Buenos Aires", 3000, "Corcho");
 			// thirdQuery(collection, "A", new Date(), new Date());
-			fourthQuery(collection, new Date(), "Buenos Aires");
+			// fourthQuery(collection, new Date(), "Buenos Aires");
 
 			collection.drop();
 
@@ -69,25 +69,30 @@ public class App {
 
 	}
 
-	public static void loadFirstQueryData(DBCollection collection) {
-		BasicDBObject document;
-		for (int i = 0; i < status.length; i++) {
-			document = new BasicDBObject();
-			Date date = new Date(System.currentTimeMillis());
-			document.append("linestatus", status[i]);
-			document.append("returnflag", returnflag[i]);
-			document.append("quantity", qty[i]);
-			document.append("extendedprice", price[i]);
-			document.append("discount", disc[i]);
-			document.append("tax", tax[i]);
-			document.append("shipdate", date.toString());
+	public static void loadFirstQueryData(DBCollection collection)
+			throws IOException {
+
+		int i = 1;
+		for (i = 1; i < 5; i++) {
+
+			Path path = FileSystems.getDefault().getPath("docs",
+					"lineitem" + i + ".json");
+
+			String supp = new String(Files.readAllBytes(path));
+
+			Object o = JSON.parse(supp);
+			DBObject document = (DBObject) o;
+
 			collection.insert(document);
 		}
+
 	}
 
-	public static void firstQuery(DBCollection collection) {
-		DBObject match = new BasicDBObject("$match", new BasicDBObject(
-				"returnflag", "true"));
+	public static void firstQuery(DBCollection collection, Date date) {
+
+		DBObject matchDateMax = new BasicDBObject("$match", new BasicDBObject(
+				"shipdate", new BasicDBObject("$lte", date)));
+
 		DBObject fields = new BasicDBObject("linestatus", 1);
 		fields.put("returnflag", 1);
 		fields.put("quantity", 1);
@@ -150,8 +155,8 @@ public class App {
 		DBObject sort2 = new BasicDBObject("$sort", new BasicDBObject(
 				"sum_base_price", -1));
 
-		List<DBObject> pipeline = Arrays.asList(match, project, group, sort,
-				sort2);
+		List<DBObject> pipeline = Arrays.asList(matchDateMax, project, group,
+				sort, sort2);
 		AggregationOutput c = collection.aggregate(pipeline);
 
 		for (DBObject a : c.results()) {

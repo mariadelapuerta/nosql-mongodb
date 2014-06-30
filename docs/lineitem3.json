@@ -1,0 +1,9 @@
+{
+	"linestatus":"delivered",
+	"returnflag":"true",
+	"quantity": 3,
+	"extendedprice":30,
+	"discount":0.3,
+	"tax":0.3,
+	"shipdate": { "$date": "2014-06-30T20:50:54.170Z"}
+}

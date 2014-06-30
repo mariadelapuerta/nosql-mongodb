@@ -1,0 +1,9 @@
+{
+	"linestatus":"canceled",
+	"returnflag":"false",
+	"quantity": 4,
+	"extendedprice":40,
+	"discount":0.4,
+	"tax":0.4,
+	"shipdate": { "$date": "2014-06-28T20:50:54.170Z"}
+}
