@@ -39,11 +39,11 @@ public class App {
 
 			// loadFirstQueryData(collection);
 
-			//loadSecondQueryData(collection);
-			
-			loadThirdQueryData(collection);
-			
+			// loadSecondQueryData(collection);
 
+			// loadThirdQueryData(collection);
+
+			loadFourthQueryData(collection);
 
 			System.out.println("All items: " + collection.getCount());
 
@@ -57,9 +57,10 @@ public class App {
 			}
 
 			// firstQuery(collection);
-			//secondQuery(collection, "Buenos Aires", 3000, "Corcho");
-			thirdQuery(collection, "A", new Date(), new Date());
-			
+			// secondQuery(collection, "Buenos Aires", 3000, "Corcho");
+			// thirdQuery(collection, "A", new Date(), new Date());
+			fourthQuery(collection, new Date(), "Buenos Aires");
+
 			collection.drop();
 
 		} catch (UnknownHostException e) {
@@ -214,14 +215,12 @@ public class App {
 
 		DBObject groupFields = new BasicDBObject("_id", "$parts.supplycost");
 
-
 		groupFields.put("info", new BasicDBObject("$push", "$$ROOT"));
 
 		DBObject group = new BasicDBObject("$group", groupFields);
 
 		DBObject sort = new BasicDBObject("$sort",
 				new BasicDBObject("price", 1));
-
 
 		DBObject limit = new BasicDBObject("$limit", 1);
 
@@ -248,7 +247,8 @@ public class App {
 
 	}
 
-	public static void loadThirdQueryData(DBCollection collection) throws IOException {
+	public static void loadThirdQueryData(DBCollection collection)
+			throws IOException {
 		int i = 1;
 		for (i = 1; i < 5; i++) {
 
@@ -263,10 +263,10 @@ public class App {
 			collection.insert(document);
 		}
 	}
-	
+
 	public static void thirdQuery(DBCollection collection, String segment,
 			Date date1, Date date2) {
-		
+
 		DBObject match = new BasicDBObject("$match", new BasicDBObject(
 				"mktsegment", segment));
 
@@ -280,22 +280,23 @@ public class App {
 		DBObject project = new BasicDBObject("$project", fields);
 
 		DBObject ordersUnwind = new BasicDBObject("$unwind", "$orders");
-				
-		DBObject matchOrderDate = new BasicDBObject("$match", new BasicDBObject(
-				"orders.orderdate", new BasicDBObject("$lt", date1)));
-		
+
+		DBObject matchOrderDate = new BasicDBObject("$match",
+				new BasicDBObject("orders.orderdate", new BasicDBObject("$lt",
+						date1)));
+
 		DBObject lineUnwind = new BasicDBObject("$unwind", "$orders.lineitems");
-		
+
 		DBObject matchShipDate = new BasicDBObject("$match", new BasicDBObject(
 				"orders.lineitems.shipdate", new BasicDBObject("$gt", date2)));
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("orderkey", "$orders.orderkey");
 		map.put("orderdate", "$orders.orderdate");
 		map.put("shippriority", "$orders.shippriority");
-		
+
 		DBObject groupFields = new BasicDBObject("_id", new BasicDBObject(map));
-		
+
 		// Suma de los precios con descuento
 		BasicDBList sum_disc_price = new BasicDBList();
 		BasicDBList discount = new BasicDBList();
@@ -303,15 +304,16 @@ public class App {
 		discount.add(1);
 		discount.add("$orders.lineitems.discount");
 		sum_disc_price.add(new BasicDBObject("$subtract", discount));
-		groupFields.put("revenue", new BasicDBObject("$sum",
-				new BasicDBObject("$multiply", sum_disc_price)));
+		groupFields.put("revenue", new BasicDBObject("$sum", new BasicDBObject(
+				"$multiply", sum_disc_price)));
 
 		DBObject group = new BasicDBObject("$group", groupFields);
-		
-		DBObject sort = new BasicDBObject("$sort", new BasicDBObject(
-				"revenue", -1));
-		
-		List<DBObject> pipeline = Arrays.asList(match, project, ordersUnwind, matchOrderDate, lineUnwind, matchShipDate, group, sort);
+
+		DBObject sort = new BasicDBObject("$sort", new BasicDBObject("revenue",
+				-1));
+
+		List<DBObject> pipeline = Arrays.asList(match, project, ordersUnwind,
+				matchOrderDate, lineUnwind, matchShipDate, group, sort);
 
 		AggregationOutput c = collection.aggregate(pipeline);
 
@@ -319,12 +321,61 @@ public class App {
 			System.out.println(a);
 
 		}
-		
-		
+
 	}
 
-	public static void loadFourthQueryData(DBCollection collection) throws IOException {
+	public static void loadFourthQueryData(DBCollection collection)
+			throws IOException {
 		loadThirdQueryData(collection);
-		
+	}
+
+	public static void fourthQuery(DBCollection collection, Date date,
+			String region) {
+
+		DBObject matchRegion = new BasicDBObject("$match", new BasicDBObject(
+				"regionname", region));
+
+		DBObject unwindOrders = new BasicDBObject("$unwind", "$orders");
+
+		DBObject orderDateMin = new BasicDBObject("$match", new BasicDBObject(
+				"orders.lineitems.shipdate", new BasicDBObject("$gt", date)));
+		Date date2 = new Date(date.getTime());
+		date2.setYear(date2.getYear() + 1);
+		DBObject orderDateMax = new BasicDBObject("$match", new BasicDBObject(
+				"orders.lineitems.shipdate", new BasicDBObject("$lt", date)));
+
+		DBObject unwindItems = new BasicDBObject("$unwind", "$orders.lineitems");
+
+		DBObject matchRegionLine = new BasicDBObject("$match",
+				new BasicDBObject("orders.lineitems.suppregionname", region));
+
+		DBObject groupFields = new BasicDBObject("_id", "$nationname");
+
+		// Suma de los precios con descuento
+		BasicDBList sum_disc_price = new BasicDBList();
+		BasicDBList discount = new BasicDBList();
+		sum_disc_price.add("$orders.lineitems.extendedprice");
+		discount.add(1);
+		discount.add("$orders.lineitems.discount");
+		sum_disc_price.add(new BasicDBObject("$subtract", discount));
+		groupFields.put("revenue", new BasicDBObject("$sum", new BasicDBObject(
+				"$multiply", sum_disc_price)));
+
+		DBObject group = new BasicDBObject("$group", groupFields);
+
+		DBObject sort = new BasicDBObject("$sort", new BasicDBObject("revenue",
+				-1));
+
+		List<DBObject> pipeline = Arrays.asList(matchRegion, unwindOrders,
+				orderDateMin, orderDateMax, unwindItems, matchRegionLine,
+				group, sort);
+
+		AggregationOutput c = collection.aggregate(pipeline);
+
+		for (DBObject a : c.results()) {
+			System.out.println(a);
+
+		}
+
 	}
 }
