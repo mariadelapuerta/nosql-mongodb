@@ -1,0 +1,16 @@
+{
+	"name":"",
+	"address":"",
+	"phone":"",
+	"actbal":"",
+	"comment":"",
+	"nationname":"",
+	"regionname":"",
+	"parts": [
+		{
+			"partkey":"", 
+			"mfgr":"", 
+			"size":"", 
+			"type":""}
+	]
+}

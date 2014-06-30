@@ -16,7 +16,6 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.util.JSON;
@@ -30,7 +29,6 @@ public class App {
 			DBCollection collection = db.getCollection("user");
 
 			populateDataBase(collection);
-
 
 			if (args.length < 1) {
 				System.out
@@ -66,7 +64,14 @@ public class App {
 
 	}
 
-	public static void loadFirstQueryData(DBCollection collection)
+	public static void populateDataBase(DBCollection collection)
+			throws IOException {
+		loadFirstQueryData(collection);
+		loadSecondQueryData(collection);
+		loadThirdAndFourthQueryData(collection);
+	}
+
+	private static void loadFirstQueryData(DBCollection collection)
 			throws IOException {
 
 		int i = 1;
@@ -162,7 +167,7 @@ public class App {
 
 	}
 
-	public static void loadSecondQueryData(DBCollection collection)
+	private static void loadSecondQueryData(DBCollection collection)
 			throws IOException {
 
 		int i = 1;
@@ -249,7 +254,7 @@ public class App {
 
 	}
 
-	public static void loadThirdQueryData(DBCollection collection)
+	private static void loadThirdAndFourthQueryData(DBCollection collection)
 			throws IOException {
 		int i = 1;
 		for (i = 1; i < 5; i++) {
@@ -326,12 +331,7 @@ public class App {
 
 	}
 
-	public static void loadFourthQueryData(DBCollection collection)
-			throws IOException {
-		loadThirdQueryData(collection);
-	}
-
-	public static void fourthQuery(DBCollection collection, Date date,
+	private static void fourthQuery(DBCollection collection, Date date,
 			String region) {
 
 		DBObject matchRegion = new BasicDBObject("$match", new BasicDBObject(
@@ -380,12 +380,5 @@ public class App {
 
 		}
 
-	}
-
-	public static void populateDataBase(DBCollection collection)
-			throws IOException {
-		loadFirstQueryData(collection);
-		loadSecondQueryData(collection);
-		loadThirdQueryData(collection);
 	}
 }
